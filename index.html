@@ -5,132 +5,248 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bernard ABG Interpreter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.95; transform: scale(1.01); }
+        }
+        .pulse-card {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-pink-500 selection:text-white">
 
-    <header class="bg-indigo-600 text-white shadow-md">
+    <header class="bg-indigo-900/60 backdrop-blur-md border-b border-indigo-500/20 sticky top-0 z-50 shadow-lg">
         <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
-            <div class="flex items-center space-x-3 mb-2 sm:mb-0">
-                <svg class="w-8 h-8 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                <h1 class="text-xl font-bold tracking-wide">Bernard ABG Interpreter</h1>
+            <div class="flex items-center space-x-3 mb-3 sm:mb-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-violet-500 flex items-center justify-center shadow-lg shadow-pink-500/30 transform hover:rotate-12 transition">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">Bernard ABG Interpreter</h1>
+                    <p class="text-xs text-indigo-300 font-medium">Clinical Masterclass & Diagnostic Engine</p>
+                </div>
             </div>
-            <nav class="flex space-x-2">
-                <button onclick="switchTab('calculator')" id="nav-calculator" class="px-4 py-2 rounded-lg font-medium transition bg-indigo-700 text-white shadow-inner">Interactive Calculator</button>
-                <button onclick="switchTab('reference')" id="nav-reference" class="px-4 py-2 rounded-lg font-medium transition text-indigo-100 hover:bg-indigo-500">ROME Reference</button>
+            <nav class="flex flex-wrap gap-2 bg-indigo-950/60 p-1.5 rounded-2xl border border-indigo-500/20 shadow-inner">
+                <button onclick="switchTab('calculator')" id="nav-calculator" class="px-4 py-2 rounded-xl font-bold text-sm transition bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/25">Calculator</button>
+                <button onclick="switchTab('steps')" id="nav-steps" class="px-4 py-2 rounded-xl font-bold text-sm transition text-indigo-300 hover:text-white hover:bg-indigo-900/40">6-Step Guide</button>
+                <button onclick="switchTab('reference')" id="nav-reference" class="px-4 py-2 rounded-xl font-bold text-sm transition text-indigo-300 hover:text-white hover:bg-indigo-900/40">ROME Reference</button>
             </nav>
         </div>
     </header>
 
     <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
 
+        <!-- Calculator Tab -->
         <section id="tab-calculator" class="space-y-6">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                <h2 class="text-2xl font-bold text-slate-900 mb-2">Step-by-Step ABG Analyzer</h2>
-                <p class="text-slate-500 mb-6">Enter patient arterial blood gas values below to receive a complete step-by-step clinical breakdown.</p>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">pH (Normal: 7.35 - 7.45)</label>
-                        <input type="number" step="0.01" id="input-ph" placeholder="e.g. 7.28" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">PaCO₂ (Normal: 35-45 mmHg)</label>
-                        <input type="number" step="0.1" id="input-paco2" placeholder="e.g. 52" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">HCO₃⁻ (Normal: 22-26 mEq/L)</label>
-                        <input type="number" step="0.1" id="input-hco3" placeholder="e.g. 24" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">PaO₂ (Normal: 80-100 mmHg)</label>
-                        <input type="number" step="0.1" id="input-pao2" placeholder="e.g. 85" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    </div>
-                </div>
+            <div class="glass-card text-slate-800 rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8 relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                <div class="flex flex-wrap gap-3">
-                    <button onclick="calculateABG()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-md shadow-indigo-100">Analyze Results</button>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Step-by-Step ABG Analyzer</h2>
+                        <span class="px-3 py-1 bg-pink-100 text-pink-700 text-xs font-bold rounded-full uppercase tracking-wider">Live Diagnostic</span>
+                    </div>
+                    <p class="text-slate-500 mb-6 font-medium">Enter patient arterial blood gas values below to generate an instant, comprehensive clinical breakdown.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 shadow-sm focus-within:border-pink-500 transition">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">pH <span class="text-slate-400 font-normal">(7.35 - 7.45)</span></label>
+                            <input type="number" step="0.01" id="input-ph" placeholder="e.g. 7.28" class="w-full bg-white px-4 py-3 rounded-xl border border-slate-300 font-bold text-slate-800 focus:ring-2 focus:ring-pink-500 focus:outline-none transition">
+                        </div>
+                        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 shadow-sm focus-within:border-pink-500 transition">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">PaCO₂ <span class="text-slate-400 font-normal">(35-45)</span></label>
+                            <input type="number" step="0.1" id="input-paco2" placeholder="e.g. 52" class="w-full bg-white px-4 py-3 rounded-xl border border-slate-300 font-bold text-slate-800 focus:ring-2 focus:ring-pink-500 focus:outline-none transition">
+                        </div>
+                        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 shadow-sm focus-within:border-pink-500 transition">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">HCO₃⁻ <span class="text-slate-400 font-normal">(22-26)</span></label>
+                            <input type="number" step="0.1" id="input-hco3" placeholder="e.g. 24" class="w-full bg-white px-4 py-3 rounded-xl border border-slate-300 font-bold text-slate-800 focus:ring-2 focus:ring-pink-500 focus:outline-none transition">
+                        </div>
+                        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 shadow-sm focus-within:border-pink-500 transition">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">PaO₂ <span class="text-slate-400 font-normal">(80-100)</span></label>
+                            <input type="number" step="0.1" id="input-pao2" placeholder="e.g. 85" class="w-full bg-white px-4 py-3 rounded-xl border border-slate-300 font-bold text-slate-800 focus:ring-2 focus:ring-pink-500 focus:outline-none transition">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="calculateABG()" class="bg-gradient-to-r from-pink-500 via-rose-500 to-indigo-600 hover:from-pink-600 hover:to-indigo-700 text-white font-extrabold px-8 py-3.5 rounded-2xl transition shadow-lg shadow-pink-500/25 transform active:scale-95 flex items-center space-x-2">
+                            <span>Analyze Results</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div id="results-card" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-6">
-                <div class="border-b pb-4">
-                    <h3 class="text-xs uppercase tracking-wider font-bold text-indigo-600 mb-1">Analysis Report</h3>
-                    <div id="primary-diagnosis" class="text-2xl font-black text-slate-900"></div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                        <span class="block text-xs font-bold text-slate-400 uppercase">Step 1: pH Status</span>
-                        <span id="res-ph" class="text-lg font-semibold text-slate-800"></span>
+            <div id="results-card" class="hidden glass-card text-slate-800 rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8 space-y-6 pulse-card">
+                <div class="border-b border-slate-200 pb-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xs uppercase tracking-wider font-extrabold text-pink-600 mb-1">Diagnostic Report</h3>
+                        <div id="primary-diagnosis" class="text-2xl sm:text-3xl font-black text-slate-950"></div>
                     </div>
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                        <span class="block text-xs font-bold text-slate-400 uppercase">Step 2 & 3: ROME Match</span>
-                        <span id="res-rome" class="text-lg font-semibold text-slate-800"></span>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                        <span class="block text-xs font-bold text-slate-400 uppercase">Step 6: Oxygenation</span>
-                        <span id="res-oxygen" class="text-lg font-semibold text-slate-800"></span>
+                    <div class="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-600 font-black shadow-inner">
+                        ✓
                     </div>
                 </div>
 
-                <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-xl">
-                    <h4 class="font-bold text-indigo-900 mb-1">Clinical Reasoning & Next Steps</h4>
-                    <p id="res-clinical" class="text-indigo-800 text-sm leading-relaxed"></p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-br from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm">
+                        <span class="block text-xs font-bold text-indigo-500 uppercase mb-1">Step 1: pH Status</span>
+                        <span id="res-step1" class="text-sm font-bold text-slate-800"></span>
+                    </div>
+                    <div class="bg-gradient-to-br from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm">
+                        <span class="block text-xs font-bold text-indigo-500 uppercase mb-1">Step 2: PaCO₂ (Resp)</span>
+                        <span id="res-step2" class="text-sm font-bold text-slate-800"></span>
+                    </div>
+                    <div class="bg-gradient-to-br from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm">
+                        <span class="block text-xs font-bold text-indigo-500 uppercase mb-1">Step 3: HCO₃⁻ (Metabolic)</span>
+                        <span id="res-step3" class="text-sm font-bold text-slate-800"></span>
+                    </div>
+                    <div class="bg-gradient-to-br from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm">
+                        <span class="block text-xs font-bold text-indigo-500 uppercase mb-1">Step 4: Primary Match (ROME)</span>
+                        <span id="res-step4" class="text-sm font-bold text-slate-800"></span>
+                    </div>
+                    <div class="bg-gradient-to-br from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm">
+                        <span class="block text-xs font-bold text-indigo-500 uppercase mb-1">Step 5: Compensation</span>
+                        <span id="res-step5" class="text-sm font-bold text-slate-800"></span>
+                    </div>
+                    <div class="bg-gradient-to-br from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm">
+                        <span class="block text-xs font-bold text-indigo-500 uppercase mb-1">Step 6: Oxygenation (PaO₂)</span>
+                        <span id="res-step6" class="text-sm font-bold text-slate-800"></span>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border-l-4 border-pink-500 p-5 rounded-r-2xl border border-indigo-100">
+                    <h4 class="font-bold text-indigo-950 mb-1 flex items-center space-x-2">
+                        <span>Clinical Reasoning & Next Steps</span>
+                    </h4>
+                    <p id="res-clinical" class="text-indigo-900 text-sm leading-relaxed font-medium"></p>
                 </div>
             </div>
         </section>
 
-        <section id="tab-reference" class="hidden space-y-6">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                <h2 class="text-2xl font-bold text-slate-900 mb-4">Quick Memory Aid: ROME</h2>
-                <div class="bg-slate-100 p-4 rounded-xl mb-6 border-l-4 border-slate-500 font-medium text-slate-700">
-                    <p>• <strong>RESPIRATORY = OPPOSITE</strong> (pH and PaCO₂ move in opposite directions)</p>
-                    <p>• <strong>METABOLIC = EQUAL</strong> (pH and HCO₃⁻ move in the same direction)</p>
+        <!-- 6-Step Guidelines Tab -->
+        <section id="tab-steps" class="hidden space-y-6">
+            <div class="glass-card text-slate-800 rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900">The 6-Step ABG Interpretation Guide</h2>
+                        <p class="text-slate-500 text-sm font-medium mt-1">Master clinical assessment with this systematic sequential framework.</p>
+                    </div>
+                    <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full uppercase">Masterclass</span>
                 </div>
 
-                <div class="overflow-x-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm flex space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-pink-500 text-white font-black flex items-center justify-center shrink-0 shadow-md">1</div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base mb-1">Assess the pH</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Check if the pH is normal (7.35–7.45). Below 7.35 indicates <strong>acidemia</strong>, while above 7.45 indicates <strong>alkalemia</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm flex space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500 text-white font-black flex items-center justify-center shrink-0 shadow-md">2</div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base mb-1">Evaluate PaCO₂ (Respiratory)</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Examine carbon dioxide levels (35–45 mmHg). High PaCO₂ signals respiratory acidosis; low PaCO₂ signals respiratory alkalosis.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm flex space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500 text-white font-black flex items-center justify-center shrink-0 shadow-md">3</div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base mb-1">Evaluate HCO₃⁻ (Metabolic)</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Examine bicarbonate levels (22–26 mEq/L). Low HCO₃⁻ indicates metabolic acidosis; high HCO₃⁻ indicates metabolic alkalosis.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm flex space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white font-black flex items-center justify-center shrink-0 shadow-md">4</div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base mb-1">Match Primary Disorder (ROME)</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Use ROME: <strong>R</strong>espiratory <strong>O</strong>pposite (pH & PaCO₂ move opposite) / <strong>M</strong>etabolic <strong>E</strong>qual (pH & HCO₃⁻ move same).</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm flex space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-violet-600 text-white font-black flex items-center justify-center shrink-0 shadow-md">5</div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base mb-1">Determine Compensation</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Check if the opposing system is trying to correct the pH: Uncompensated, Partially Compensated, or Fully Compensated.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm flex space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-slate-800 text-white font-black flex items-center justify-center shrink-0 shadow-md">6</div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base mb-1">Assess Oxygenation (PaO₂)</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Review PaO₂ (80–100 mmHg) to grade hypoxemia status (normal, mild, moderate, or severe).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reference Tab -->
+        <section id="tab-reference" class="hidden space-y-6">
+            <div class="glass-card text-slate-800 rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-black text-slate-900">Quick Memory Aid: ROME</h2>
+                    <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full uppercase">Mastery Cheat Sheet</span>
+                </div>
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-5 rounded-2xl mb-6 border-l-4 border-indigo-600 font-bold text-indigo-950 shadow-inner space-y-2">
+                    <p class="flex items-center space-x-2"><span>⚡</span> <span><strong>RESPIRATORY = OPPOSITE</strong> (pH and PaCO₂ move in opposite directions)</span></p>
+                    <p class="flex items-center space-x-2"><span>⚡</span> <span><strong>METABOLIC = EQUAL</strong> (pH and HCO₃⁻ move in the same direction)</span></p>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-slate-100 text-slate-700 text-sm">
-                                <th class="p-3 rounded-l-lg">Disorder</th>
-                                <th class="p-3">pH</th>
-                                <th class="p-3">PaCO₂</th>
-                                <th class="p-3">HCO₃⁻</th>
-                                <th class="p-3 rounded-r-lg">Common Causes</th>
+                            <tr class="bg-slate-900 text-white text-xs uppercase tracking-wider">
+                                <th class="p-4">Disorder</th>
+                                <th class="p-4">pH</th>
+                                <th class="p-4">PaCO₂</th>
+                                <th class="p-4">HCO₃⁻</th>
+                                <th class="p-4">Common Causes</th>
                             </tr>
                         </thead>
-                        <tbody class="text-sm divide-y divide-slate-100">
-                            <tr>
-                                <td class="p-3 font-semibold text-slate-900">Respiratory Acidosis</td>
-                                <td class="p-3 text-red-600 font-bold">↓ Low</td>
-                                <td class="p-3 text-emerald-600 font-bold">↑ High</td>
-                                <td class="p-3 text-slate-500">Normal</td>
-                                <td class="p-3 text-slate-600">COPD, Hypoventilation, CNS depression</td>
+                        <tbody class="text-sm divide-y divide-slate-100 bg-white font-medium">
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="p-4 font-bold text-slate-900">Respiratory Acidosis</td>
+                                <td class="p-4 text-rose-600 font-extrabold">↓ Low</td>
+                                <td class="p-4 text-emerald-600 font-extrabold">↑ High</td>
+                                <td class="p-4 text-slate-400">Normal</td>
+                                <td class="p-4 text-slate-600">COPD, Hypoventilation, CNS depression</td>
                             </tr>
-                            <tr>
-                                <td class="p-3 font-semibold text-slate-900">Respiratory Alkalosis</td>
-                                <td class="p-3 text-emerald-600 font-bold">↑ High</td>
-                                <td class="p-3 text-red-600 font-bold">↓ Low</td>
-                                <td class="p-3 text-slate-500">Normal</td>
-                                <td class="p-3 text-slate-600">Hyperventilation, Anxiety, PE</td>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="p-4 font-bold text-slate-900">Respiratory Alkalosis</td>
+                                <td class="p-4 text-emerald-600 font-extrabold">↑ High</td>
+                                <td class="p-4 text-rose-600 font-extrabold">↓ Low</td>
+                                <td class="p-4 text-slate-400">Normal</td>
+                                <td class="p-4 text-slate-600">Hyperventilation, Anxiety, PE</td>
                             </tr>
-                            <tr>
-                                <td class="p-3 font-semibold text-slate-900">Metabolic Acidosis</td>
-                                <td class="p-3 text-red-600 font-bold">↓ Low</td>
-                                <td class="p-3 text-slate-500">Normal</td>
-                                <td class="p-3 text-red-600 font-bold">↓ Low</td>
-                                <td class="p-3 text-slate-600">DKA, Renal failure, Severe diarrhea</td>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="p-4 font-bold text-slate-900">Metabolic Acidosis</td>
+                                <td class="p-4 text-rose-600 font-extrabold">↓ Low</td>
+                                <td class="p-4 text-slate-400">Normal</td>
+                                <td class="p-4 text-rose-600 font-extrabold">↓ Low</td>
+                                <td class="p-4 text-slate-600">DKA, Renal failure, Severe diarrhea</td>
                             </tr>
-                            <tr>
-                                <td class="p-3 font-semibold text-slate-900">Metabolic Alkalosis</td>
-                                <td class="p-3 text-emerald-600 font-bold">↑ High</td>
-                                <td class="p-3 text-slate-500">Normal</td>
-                                <td class="p-3 text-emerald-600 font-bold">↑ High</td>
-                                <td class="p-3 text-slate-600">Vomiting, Gastric suctioning, Diuretics</td>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="p-4 font-bold text-slate-900">Metabolic Alkalosis</td>
+                                <td class="p-4 text-emerald-600 font-extrabold">↑ High</td>
+                                <td class="p-4 text-slate-400">Normal</td>
+                                <td class="p-4 text-emerald-600 font-extrabold">↑ High</td>
+                                <td class="p-4 text-slate-600">Vomiting, Gastric suctioning, Diuretics</td>
                             </tr>
                         </tbody>
                     </table>
@@ -142,12 +258,12 @@
 
     <script>
         function switchTab(tabId) {
-            ['calculator', 'reference'].forEach(id => {
+            ['calculator', 'steps', 'reference'].forEach(id => {
                 document.getElementById(`tab-${id}`).classList.add('hidden');
-                document.getElementById(`nav-${id}`).className = "px-4 py-2 rounded-lg font-medium transition text-indigo-100 hover:bg-indigo-500";
+                document.getElementById(`nav-${id}`).className = "px-4 py-2 rounded-xl font-bold text-sm transition text-indigo-300 hover:text-white hover:bg-indigo-900/40";
             });
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabId}`).className = "px-4 py-2 rounded-lg font-medium transition bg-indigo-700 text-white shadow-inner";
+            document.getElementById(`nav-${tabId}`).className = "px-4 py-2 rounded-xl font-bold text-sm transition bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/25";
         }
 
         function calculateABG() {
@@ -156,84 +272,115 @@
             const hco3 = parseFloat(document.getElementById('input-hco3').value);
             const pao2 = parseFloat(document.getElementById('input-pao2').value);
 
+            const resCard = document.getElementById('results-card');
+            resCard.classList.remove('hidden');
+
             if(isNaN(ph) || isNaN(paco2) || isNaN(hco3)) {
-                // Custom non-blocking warning message box representation or graceful return
-                const resCard = document.getElementById('results-card');
-                resCard.classList.remove('hidden');
-                document.getElementById('primary-diagnosis').innerText = "Please fill in valid numbers for pH, PaCO₂, and HCO₃⁻.";
-                document.getElementById('res-ph').innerText = "Incomplete Input";
-                document.getElementById('res-rome').innerText = "-";
-                document.getElementById('res-oxygen').innerText = "-";
-                document.getElementById('res-clinical').innerText = "Please provide complete arterial blood gas values to execute clinical interpretation.";
+                document.getElementById('primary-diagnosis').innerText = "Incomplete Inputs Provided";
+                document.getElementById('res-step1').innerText = "Missing Data";
+                document.getElementById('res-step2').innerText = "-";
+                document.getElementById('res-step3').innerText = "-";
+                document.getElementById('res-step4').innerText = "-";
+                document.getElementById('res-step5').innerText = "-";
+                document.getElementById('res-step6').innerText = "-";
+                document.getElementById('res-clinical').innerText = "Please fill in valid numbers for pH, PaCO₂, and HCO₃⁻ to execute clinical diagnosis.";
                 return;
             }
 
-            let phStatus = ph < 7.35 ? 'Acidemia (Acidic)' : (ph > 7.45 ? 'Alkalemia (Alkaline)' : 'Normal pH');
+            // Step 1: pH Status
+            let step1 = '';
+            if(ph < 7.35) step1 = `Acidemia (${ph} < 7.35)`;
+            else if(ph > 7.45) step1 = `Alkalemia (${ph} > 7.45)`;
+            else step1 = `Normal pH (${ph})`;
+
+            // Step 2: PaCO2 Status
+            let step2 = '';
+            if(paco2 < 35) step2 = `Low PaCO₂ (${paco2} mmHg - Alkalotic)`;
+            else if(paco2 > 45) step2 = `High PaCO₂ (${paco2} mmHg - Acidotic)`;
+            else step2 = `Normal PaCO₂ (${paco2} mmHg)`;
+
+            // Step 3: HCO3 Status
+            let step3 = '';
+            if(hco3 < 22) step3 = `Low HCO₃⁻ (${hco3} mEq/L - Acidotic)`;
+            else if(hco3 > 26) step3 = `High HCO₃⁻ (${hco3} mEq/L - Alkalotic)`;
+            else step3 = `Normal HCO₃⁻ (${hco3} mEq/L)`;
+
+            // Step 4 & 5: ROME & Compensation
             let diagnosis = '';
-            let rome = '';
+            let step4 = '';
+            let step5 = '';
             let clinical = '';
 
-            // Basic ROME Engine Logic
             if(ph < 7.35) {
                 if(paco2 > 45 && hco3 < 22) {
-                    diagnosis = 'Mixed Primary Acidosis (Respiratory & Metabolic)';
-                    rome = 'Both systems contributing to acidemia';
+                    diagnosis = 'Mixed Primary Acidosis';
+                    step4 = 'Both systems contributing';
+                    step5 = 'Uncompensated / Mixed';
                 } else if(paco2 > 45) {
-                    diagnosis = 'Respiratory Acidosis (Uncompensated)';
-                    rome = 'Opposite direction (pH Low, PaCO₂ High)';
+                    diagnosis = 'Respiratory Acidosis';
+                    step4 = 'Opposite (pH Low, PaCO₂ High)';
+                    step5 = (hco3 > 26) ? 'Partially Compensated' : 'Uncompensated';
                     clinical = 'Hypoventilation driving up carbon dioxide. Monitor airway, support oxygenation, and investigate respiratory depression triggers.';
                 } else if(hco3 < 22) {
-                    diagnosis = 'Metabolic Acidosis (Uncompensated)';
-                    rome = 'Equal direction (pH Low, HCO₃⁻ Low)';
+                    diagnosis = 'Metabolic Acidosis';
+                    step4 = 'Equal (pH Low, HCO₃⁻ Low)';
+                    step5 = (paco2 < 35) ? 'Partially Compensated' : 'Uncompensated';
                     clinical = 'Loss of base or accumulation of fixed acids. Assess hydration, check renal function, blood glucose (DKA), or GI losses.';
                 } else {
                     diagnosis = 'Primary Acidemia with Borderline Values';
-                    rome = 'Evaluate patient history closely';
+                    step4 = 'Evaluate values';
+                    step5 = 'Borderline';
                 }
             } else if(ph > 7.45) {
                 if(paco2 < 35 && hco3 > 26) {
                     diagnosis = 'Mixed Primary Alkalosis';
-                    rome = 'Both systems contributing';
+                    step4 = 'Both systems contributing';
+                    step5 = 'Uncompensated / Mixed';
                 } else if(paco2 < 35) {
-                    diagnosis = 'Respiratory Alkalosis (Uncompensated)';
-                    rome = 'Opposite direction (pH High, PaCO₂ Low)';
+                    diagnosis = 'Respiratory Alkalosis';
+                    step4 = 'Opposite (pH High, PaCO₂ Low)';
+                    step5 = (hco3 < 22) ? 'Partially Compensated' : 'Uncompensated';
                     clinical = 'Hyperventilation blowing off excess CO₂. Implement coached breathing exercises or address underlying anxiety/pain.';
                 } else if(hco3 > 26) {
-                    diagnosis = 'Metabolic Alkalosis (Uncompensated)';
-                    rome = 'Equal direction (pH High, HCO₃⁻ High)';
+                    diagnosis = 'Metabolic Alkalosis';
+                    step4 = 'Equal (pH High, HCO₃⁻ High)';
+                    step5 = (paco2 > 45) ? 'Partially Compensated' : 'Uncompensated';
                     clinical = 'Excess base retention or acid loss. Monitor for chloride/potassium depletion, particularly from prolonged vomiting or NG suctioning.';
                 } else {
                     diagnosis = 'Primary Alkalemia with Borderline Values';
-                    rome = 'Evaluate patient history closely';
+                    step4 = 'Evaluate values';
+                    step5 = 'Borderline';
                 }
             } else {
                 if(paco2 < 35 || paco2 > 45 || hco3 < 22 || hco3 > 26) {
-                    diagnosis = 'Fully Compensated Acid-Base Disorder';
-                    rome = 'pH returned to normal range (7.35-7.45) via secondary compensation';
+                    diagnosis = 'Fully Compensated Disorder';
+                    step4 = 'pH normalized by secondary response';
+                    step5 = 'Fully Compensated';
                     clinical = 'The body has successfully compensated for the primary imbalance. Monitor stability and look at chronic baseline labs.';
                 } else {
                     diagnosis = 'Normal Arterial Blood Gas';
-                    rome = 'All parameters within normal physiological limits';
+                    step4 = 'All parameters within normal limits';
+                    step5 = 'None Required';
                     clinical = 'No immediate acid-base disturbance detected.';
                 }
             }
 
-            // Oxygenation check
-            let oxyStatus = 'Normal Oxygenation (PaO₂ ≥ 80)';
+            // Step 6: Oxygenation
+            let step6 = 'Not Provided';
             if(!isNaN(pao2)) {
-                if(pao2 < 60) oxyStatus = 'Severe Hypoxemia (< 60 mmHg)';
-                else if(pao2 < 80) oxyStatus = 'Mild to Moderate Hypoxemia (60-79 mmHg)';
-            } else {
-                oxyStatus = 'Not Provided';
+                if(pao2 < 60) step6 = `Severe Hypoxemia (${pao2} mmHg)`;
+                else if(pao2 < 80) step6 = `Mild-Moderate Hypoxemia (${pao2} mmHg)`;
+                else step6 = `Normal Oxygenation (${pao2} mmHg)`;
             }
 
             document.getElementById('primary-diagnosis').innerText = diagnosis;
-            document.getElementById('res-ph').innerText = phStatus;
-            document.getElementById('res-rome').innerText = rome;
-            document.getElementById('res-oxygen').innerText = oxyStatus;
+            document.getElementById('res-step1').innerText = step1;
+            document.getElementById('res-step2').innerText = step2;
+            document.getElementById('res-step3').innerText = step3;
+            document.getElementById('res-step4').innerText = step4;
+            document.getElementById('res-step5').innerText = step5;
+            document.getElementById('res-step6').innerText = step6;
             document.getElementById('res-clinical').innerText = clinical || 'Review full patient presentation and verify lab collection technique.';
-
-            document.getElementById('results-card').classList.remove('hidden');
         }
     </script>
 </body>
