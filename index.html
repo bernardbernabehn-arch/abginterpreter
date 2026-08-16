@@ -38,6 +38,7 @@
             <nav class="flex flex-wrap gap-2 bg-indigo-950/60 p-1.5 rounded-2xl border border-indigo-500/20 shadow-inner">
                 <button onclick="switchTab('calculator')" id="nav-calculator" class="px-4 py-2 rounded-xl font-bold text-sm transition bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/25">Calculator</button>
                 <button onclick="switchTab('steps')" id="nav-steps" class="px-4 py-2 rounded-xl font-bold text-sm transition text-indigo-300 hover:text-white hover:bg-indigo-900/40">6-Step Guide</button>
+                <button onclick="switchTab('compensation')" id="nav-compensation" class="px-4 py-2 rounded-xl font-bold text-sm transition text-indigo-300 hover:text-white hover:bg-indigo-900/40">Compensation States</button>
                 <button onclick="switchTab('reference')" id="nav-reference" class="px-4 py-2 rounded-xl font-bold text-sm transition text-indigo-300 hover:text-white hover:bg-indigo-900/40">ROME Reference</button>
             </nav>
         </div>
@@ -86,6 +87,7 @@
                 </div>
             </div>
 
+            <!-- Results Card -->
             <div id="results-card" class="hidden glass-card text-slate-800 rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8 space-y-6 pulse-card">
                 <div class="border-b border-slate-200 pb-4 flex items-center justify-between">
                     <div>
@@ -115,7 +117,7 @@
                         <span id="res-step4" class="text-sm font-bold text-slate-800"></span>
                     </div>
                     <div class="bg-gradient-to-br from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm">
-                        <span class="block text-xs font-bold text-indigo-500 uppercase mb-1">Step 5: Compensation</span>
+                        <span class="block text-xs font-bold text-indigo-500 uppercase mb-1">Step 5: Compensation Status</span>
                         <span id="res-step5" class="text-sm font-bold text-slate-800"></span>
                     </div>
                     <div class="bg-gradient-to-br from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm">
@@ -133,7 +135,7 @@
             </div>
         </section>
 
-        <!-- 6-Step Guidelines Tab -->
+        <!-- 6-Step Guide Tab -->
         <section id="tab-steps" class="hidden space-y-6">
             <div class="glass-card text-slate-800 rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8">
                 <div class="flex items-center justify-between mb-6">
@@ -149,7 +151,7 @@
                         <div class="w-10 h-10 rounded-xl bg-pink-500 text-white font-black flex items-center justify-center shrink-0 shadow-md">1</div>
                         <div>
                             <h3 class="font-bold text-slate-900 text-base mb-1">Assess the pH</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Check if the pH is normal (7.35–7.45). Below 7.35 indicates <strong>acidemia</strong>, while above 7.45 indicates <strong>alkalemia</strong>.</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Check if the pH is normal (7.35 - 7.45). Below 7.35 indicates <strong>acidemia</strong>, while above 7.45 indicates <strong>alkalemia</strong>.</p>
                         </div>
                     </div>
 
@@ -157,7 +159,7 @@
                         <div class="w-10 h-10 rounded-xl bg-indigo-500 text-white font-black flex items-center justify-center shrink-0 shadow-md">2</div>
                         <div>
                             <h3 class="font-bold text-slate-900 text-base mb-1">Evaluate PaCO₂ (Respiratory)</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Examine carbon dioxide levels (35–45 mmHg). High PaCO₂ signals respiratory acidosis; low PaCO₂ signals respiratory alkalosis.</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Examine carbon dioxide levels (35 - 45 mmHg). High PaCO₂ signals respiratory acidosis; low PaCO₂ signals respiratory alkalosis.</p>
                         </div>
                     </div>
 
@@ -165,7 +167,7 @@
                         <div class="w-10 h-10 rounded-xl bg-purple-500 text-white font-black flex items-center justify-center shrink-0 shadow-md">3</div>
                         <div>
                             <h3 class="font-bold text-slate-900 text-base mb-1">Evaluate HCO₃⁻ (Metabolic)</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Examine bicarbonate levels (22–26 mEq/L). Low HCO₃⁻ indicates metabolic acidosis; high HCO₃⁻ indicates metabolic alkalosis.</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Examine bicarbonate levels (22 - 26 mEq/L). Low HCO₃⁻ indicates metabolic acidosis; high HCO₃⁻ indicates metabolic alkalosis.</p>
                         </div>
                     </div>
 
@@ -173,7 +175,7 @@
                         <div class="w-10 h-10 rounded-xl bg-rose-500 text-white font-black flex items-center justify-center shrink-0 shadow-md">4</div>
                         <div>
                             <h3 class="font-bold text-slate-900 text-base mb-1">Match Primary Disorder (ROME)</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Use ROME: <strong>R</strong>espiratory <strong>O</strong>pposite (pH & PaCO₂ move opposite) / <strong>M</strong>etabolic <strong>E</strong>qual (pH & HCO₃⁻ move same).</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Use ROME: <strong>R</strong>espiratory <strong>O</strong>pposite (pH and PaCO₂ move opposite) / <strong>M</strong>etabolic <strong>E</strong>qual (pH and HCO₃⁻ move same).</p>
                         </div>
                     </div>
 
@@ -181,7 +183,7 @@
                         <div class="w-10 h-10 rounded-xl bg-violet-600 text-white font-black flex items-center justify-center shrink-0 shadow-md">5</div>
                         <div>
                             <h3 class="font-bold text-slate-900 text-base mb-1">Determine Compensation</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Check if the opposing system is trying to correct the pH: Uncompensated, Partially Compensated, or Fully Compensated.</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Check if opposing system is trying to correct pH: Uncompensated, Partially Compensated, or Fully Compensated.</p>
                         </div>
                     </div>
 
@@ -189,14 +191,77 @@
                         <div class="w-10 h-10 rounded-xl bg-slate-800 text-white font-black flex items-center justify-center shrink-0 shadow-md">6</div>
                         <div>
                             <h3 class="font-bold text-slate-900 text-base mb-1">Assess Oxygenation (PaO₂)</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Review PaO₂ (80–100 mmHg) to grade hypoxemia status (normal, mild, moderate, or severe).</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Review PaO₂ (80 - 100 mmHg) to grade hypoxemia status (normal, mild, moderate, or severe).</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Reference Tab -->
+        <!-- Compensation States Tab -->
+        <section id="tab-compensation" class="hidden space-y-6">
+            <div class="glass-card text-slate-800 rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8 space-y-6">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Understanding Compensation States</h2>
+                    <p class="text-slate-500 text-sm font-medium mt-1">Learn how the body responds to maintain homeostasis during acid-base imbalances.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Uncompensated -->
+                    <div class="bg-gradient-to-br from-slate-50 to-rose-50/50 p-6 rounded-2xl border border-rose-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-rose-100 text-rose-700 text-xs font-extrabold rounded-full mb-3 uppercase tracking-wider">Acute / Recent</span>
+                            <h3 class="text-xl font-black text-slate-900 mb-2">1. Uncompensated</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                                The primary system has created an imbalance, but the opposing system <strong>has not responded yet</strong>. Its value remains entirely normal.
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-rose-100 text-xs font-semibold space-y-1 text-slate-700">
+                            <p><strong>Lab Picture:</strong></p>
+                            <p>• pH: Abnormal (&lt;7.35 or &gt;7.45)</p>
+                            <p>• Primary Component: Abnormal</p>
+                            <p>• Secondary Component: <span class="text-rose-600 font-bold">Normal</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Partially Compensated -->
+                    <div class="bg-gradient-to-br from-slate-50 to-amber-50/50 p-6 rounded-2xl border border-amber-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-xs font-extrabold rounded-full mb-3 uppercase tracking-wider">Active Response</span>
+                            <h3 class="text-xl font-black text-slate-900 mb-2">2. Partially Compensated</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                                The opposing system has recognized the imbalance and <strong>started working</strong> to fix it, but it hasn't pushed the pH all the way back into the normal range yet.
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-amber-100 text-xs font-semibold space-y-1 text-slate-700">
+                            <p><strong>Lab Picture:</strong></p>
+                            <p>• pH: <span class="text-amber-600 font-bold">Still Abnormal</span></p>
+                            <p>• Primary Component: Abnormal</p>
+                            <p>• Secondary Component: Abnormal</p>
+                        </div>
+                    </div>
+
+                    <!-- Fully Compensated -->
+                    <div class="bg-gradient-to-br from-slate-50 to-emerald-50/50 p-6 rounded-2xl border border-emerald-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-extrabold rounded-full mb-3 uppercase tracking-wider">Corrected pH</span>
+                            <h3 class="text-xl font-black text-slate-900 mb-2">3. Fully Compensated</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                                The opposing system has worked overtime and successfully dragged the pH <strong>back into the normal range</strong> (7.35 - 7.45), even though the underlying problem is still present.
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-emerald-100 text-xs font-semibold space-y-1 text-slate-700">
+                            <p><strong>Lab Picture:</strong></p>
+                            <p>• pH: <span class="text-emerald-600 font-bold">Returned to Normal</span></p>
+                            <p>• Both PaCO₂ & HCO₃⁻: Abnormal</p>
+                            <p>• *Tip:* Check pH lean (&lt;7.40 vs &gt;7.40) to find primary disorder!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROME Reference Tab -->
         <section id="tab-reference" class="hidden space-y-6">
             <div class="glass-card text-slate-800 rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8">
                 <div class="flex items-center justify-between mb-4">
@@ -258,7 +323,7 @@
 
     <script>
         function switchTab(tabId) {
-            ['calculator', 'steps', 'reference'].forEach(id => {
+            ['calculator', 'steps', 'compensation', 'reference'].forEach(id => {
                 document.getElementById(`tab-${id}`).classList.add('hidden');
                 document.getElementById(`nav-${id}`).className = "px-4 py-2 rounded-xl font-bold text-sm transition text-indigo-300 hover:text-white hover:bg-indigo-900/40";
             });
@@ -311,56 +376,71 @@
             let step5 = '';
             let clinical = '';
 
+            const isRespAcidosis = paco2 > 45;
+            const isRespAlkalosis = paco2 < 35;
+            const isMetabAcidosis = hco3 < 22;
+            const isMetabAlkalosis = hco3 > 26;
+
             if(ph < 7.35) {
-                if(paco2 > 45 && hco3 < 22) {
-                    diagnosis = 'Mixed Primary Acidosis';
-                    step4 = 'Both systems contributing';
-                    step5 = 'Uncompensated / Mixed';
-                } else if(paco2 > 45) {
+                if(isRespAcidosis) {
                     diagnosis = 'Respiratory Acidosis';
                     step4 = 'Opposite (pH Low, PaCO₂ High)';
-                    step5 = (hco3 > 26) ? 'Partially Compensated' : 'Uncompensated';
+                    if(!isMetabAlkalosis) {
+                        step5 = 'Uncompensated (HCO₃⁻ is normal)';
+                    } else {
+                        step5 = 'Partially Compensated (HCO₃⁻ is elevated to buffer)';
+                    }
                     clinical = 'Hypoventilation driving up carbon dioxide. Monitor airway, support oxygenation, and investigate respiratory depression triggers.';
-                } else if(hco3 < 22) {
+                } else if(isMetabAcidosis) {
                     diagnosis = 'Metabolic Acidosis';
                     step4 = 'Equal (pH Low, HCO₃⁻ Low)';
-                    step5 = (paco2 < 35) ? 'Partially Compensated' : 'Uncompensated';
+                    if(!isRespAlkalosis) {
+                        step5 = 'Uncompensated (PaCO₂ is normal)';
+                    } else {
+                        step5 = 'Partially Compensated (PaCO₂ is low due to hyperventilation)';
+                    }
                     clinical = 'Loss of base or accumulation of fixed acids. Assess hydration, check renal function, blood glucose (DKA), or GI losses.';
                 } else {
                     diagnosis = 'Primary Acidemia with Borderline Values';
                     step4 = 'Evaluate values';
                     step5 = 'Borderline';
+                    clinical = 'Review full patient presentation and verify lab collection technique.';
                 }
             } else if(ph > 7.45) {
-                if(paco2 < 35 && hco3 > 26) {
-                    diagnosis = 'Mixed Primary Alkalosis';
-                    step4 = 'Both systems contributing';
-                    step5 = 'Uncompensated / Mixed';
-                } else if(paco2 < 35) {
+                if(isRespAlkalosis) {
                     diagnosis = 'Respiratory Alkalosis';
                     step4 = 'Opposite (pH High, PaCO₂ Low)';
-                    step5 = (hco3 < 22) ? 'Partially Compensated' : 'Uncompensated';
+                    if(!isMetabAcidosis) {
+                        step5 = 'Uncompensated (HCO₃⁻ is normal)';
+                    } else {
+                        step5 = 'Partially Compensated (HCO₃⁻ is decreased)';
+                    }
                     clinical = 'Hyperventilation blowing off excess CO₂. Implement coached breathing exercises or address underlying anxiety/pain.';
-                } else if(hco3 > 26) {
+                } else if(isMetabAlkalosis) {
                     diagnosis = 'Metabolic Alkalosis';
                     step4 = 'Equal (pH High, HCO₃⁻ High)';
-                    step5 = (paco2 > 45) ? 'Partially Compensated' : 'Uncompensated';
+                    if(!isRespAcidosis) {
+                        step5 = 'Uncompensated (PaCO₂ is normal)';
+                    } else {
+                        step5 = 'Partially Compensated (PaCO₂ is elevated)';
+                    }
                     clinical = 'Excess base retention or acid loss. Monitor for chloride/potassium depletion, particularly from prolonged vomiting or NG suctioning.';
                 } else {
                     diagnosis = 'Primary Alkalemia with Borderline Values';
                     step4 = 'Evaluate values';
                     step5 = 'Borderline';
+                    clinical = 'Review full patient presentation and verify lab collection technique.';
                 }
             } else {
-                if(paco2 < 35 || paco2 > 45 || hco3 < 22 || hco3 > 26) {
-                    diagnosis = 'Fully Compensated Disorder';
+                if((isRespAcidosis && isMetabAlkalosis) || (isRespAlkalosis && isMetabAcidosis)) {
+                    diagnosis = isRespAcidosis ? 'Fully Compensated Respiratory Acidosis' : 'Fully Compensated Metabolic Acidosis';
                     step4 = 'pH normalized by secondary response';
-                    step5 = 'Fully Compensated';
-                    clinical = 'The body has successfully compensated for the primary imbalance. Monitor stability and look at chronic baseline labs.';
+                    step5 = 'Fully Compensated (pH back in normal range 7.35 - 7.45)';
+                    clinical = 'The opposing system has fully compensated, returning the pH to normal. Common in chronic conditions like COPD.';
                 } else {
                     diagnosis = 'Normal Arterial Blood Gas';
                     step4 = 'All parameters within normal limits';
-                    step5 = 'None Required';
+                    step5 = 'None Required (Uncompensated / Normal)';
                     clinical = 'No immediate acid-base disturbance detected.';
                 }
             }
@@ -380,7 +460,7 @@
             document.getElementById('res-step4').innerText = step4;
             document.getElementById('res-step5').innerText = step5;
             document.getElementById('res-step6').innerText = step6;
-            document.getElementById('res-clinical').innerText = clinical || 'Review full patient presentation and verify lab collection technique.';
+            document.getElementById('res-clinical').innerText = clinical;
         }
     </script>
 </body>
