@@ -360,14 +360,14 @@
 
             // Step 2: PaCO2 Status
             let step2 = '';
-            if(paco2 < 35) step2 = `Low PaCO2 (${paco2} mmHg - Alkalotic)`;
-            else if(paco2 > 45) step2 = `High PaCO2 (${paco2} mmHg - Acidotic)`;
+            if(paco2 < 35) step2 = `Low PaCO2 (${paco2} mmHg - Alkalosis)`;
+            else if(paco2 > 45) step2 = `High PaCO2 (${paco2} mmHg - Acidosis)`;
             else step2 = `Normal PaCO2 (${paco2} mmHg)`;
 
             // Step 3: HCO3 Status
             let step3 = '';
-            if(hco3 < 22) step3 = `Low HCO3- (${hco3} mEq/L - Acidotic)`;
-            else if(hco3 > 26) step3 = `High HCO3- (${hco3} mEq/L - Alkalotic)`;
+            if(hco3 < 22) step3 = `Low HCO3- (${hco3} mEq/L - acidosis)`;
+            else if(hco3 > 26) step3 = `High HCO3- (${hco3} mEq/L - alkalosis)`;
             else step3 = `Normal HCO3- (${hco3} mEq/L)`;
 
             // Robust ROME & Compensation Evaluation
@@ -397,7 +397,7 @@
                     diagnosis = 'Respiratory Acidosis with Metabolic Contribution';
                     step4 = 'Mixed / Both parameters contributing to acidosis';
                     step5 = 'Partially Compensated or Mixed Disorder';
-                    clinical = 'Simultaneous respiratory and metabolic acidotic drivers present. Immediate clinical evaluation of pulmonary and renal/metabolic status required.';
+                    clinical = 'Simultaneous respiratory and metabolic acidosis drivers present. Immediate clinical evaluation of pulmonary and renal/metabolic status required.';
                 } else {
                     if (paco2 >= hco3) {
                         diagnosis = 'Respiratory Acidosis';
@@ -427,7 +427,7 @@
                     diagnosis = 'Respiratory Alkalosis with Metabolic Contribution';
                     step4 = 'Mixed / Both parameters contributing to alkalosis';
                     step5 = 'Partially Compensated or Mixed Disorder';
-                    clinical = 'Simultaneous respiratory and metabolic alkalotic drivers present. Monitor vital signs and electrolyte balance.';
+                    clinical = 'Simultaneous respiratory and metabolic alkalosis drivers present. Monitor vital signs and electrolyte balance.';
                 } else {
                     if (paco2 <= hco3) {
                         diagnosis = 'Respiratory Alkalosis';
